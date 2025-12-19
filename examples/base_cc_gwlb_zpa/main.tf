@@ -64,8 +64,6 @@ module "network" {
   public_subnets    = var.public_subnets
   workloads_subnets = var.workloads_subnets
   cc_subnets        = var.cc_subnets
-  route53_subnets   = var.route53_subnets
-  zpa_enabled       = var.zpa_enabled
   gwlb_enabled      = var.gwlb_enabled
   gwlb_endpoint_ids = module.gwlb_endpoint.gwlbe
 }
@@ -196,7 +194,6 @@ module "cc_sg" {
   resource_tag             = random_string.suffix.result
   global_tags              = local.global_tags
   vpc_id                   = module.network.vpc_id
-  zpa_enabled              = var.zpa_enabled
   http_probe_port          = var.http_probe_port
   mgmt_ssh_enabled         = var.mgmt_ssh_enabled
   all_ports_egress_enabled = var.all_ports_egress_enabled
@@ -242,23 +239,6 @@ module "gwlb_endpoint" {
   gwlb_arn            = module.gwlb.gwlb_arn
   acceptance_required = var.acceptance_required
   allowed_principals  = var.allowed_principals
-}
-
-
-################################################################################
-# 9. Create Route 53 Resolver Rules and Endpoints for utilization with DNS 
-#    redirection to facilitate Cloud Connector ZPA service.
-################################################################################
-module "route53" {
-  source                               = "../../modules/terraform-zscc-route53-aws"
-  name_prefix                          = var.name_prefix
-  resource_tag                         = random_string.suffix.result
-  global_tags                          = local.global_tags
-  vpc_id                               = module.network.vpc_id
-  r53_subnet_ids                       = module.network.route53_subnet_ids
-  outbound_endpoint_security_group_ids = module.cc_sg.outbound_endpoint_security_group_id
-  domain_names                         = var.domain_names
-  target_address                       = var.target_address
 }
 
 

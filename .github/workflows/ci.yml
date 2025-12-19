@@ -101,18 +101,6 @@ jobs:
           terraform validate -no-color
 
       - name: Terraform Init
-        id: init-zscc-route53-aws
-        run: |
-          cd modules/terraform-zscc-route53-aws
-          terraform init   
-
-      - name: Terraform Validate
-        id: validate-zscc-route53-aws
-        run: |
-          cd modules/terraform-zscc-route53-aws
-          terraform validate -no-color
-
-      - name: Terraform Init
         id: init-zscc-sg-aws
         run: |
           cd modules/terraform-zscc-sg-aws

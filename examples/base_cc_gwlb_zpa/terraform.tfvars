@@ -202,17 +202,3 @@
 
 #support_access_enabled                     = false
 #zssupport_server                           = "199.168.148.101/32"
-
-
-#####################################################################################################################
-##### ZPA/Route 53 specific variables #####
-#####################################################################################################################
-## 27. Provide the domain names you want Route53 to redirect to Cloud Connector for ZPA interception. Only applicable for base + zpa or zpa_enabled = true
-##     deployment types where Route53 subnets, Resolver Rules, and Outbound Endpoints are being created. Two example domains are populated to show the 
-##     mapping structure and syntax. ZPA Module will read through each to create a resolver rule per domain_name entry. Ucomment domain_names variable and
-##     add any additional appsegXX mappings as needed.
-
-#domain_names = {
-#  appseg1 = "app1.com"
-#  appseg2 = "app2.com"
-#}

@@ -18,7 +18,7 @@ variable "global_tags" {
 
 variable "vpc_cidr" {
   type        = string
-  description = "VPC IP CIDR Range. All subnet resources that might get created (public, workload, cloud connector) are derived from this /16 CIDR. If you require creating a VPC smaller than /16, you may need to explicitly define all other subnets via public_subnets, workload_subnets, cc_subnets, and route53_subnets variables"
+  description = "VPC IP CIDR Range. All subnet resources that might get created (public, workload, cloud connector) are derived from this /16 CIDR. If you require creating a VPC smaller than /16, you may need to explicitly define all other subnets via public_subnets, workload_subnets, and cc_subnets variables"
   default     = "10.1.0.0/16"
 }
 
@@ -38,18 +38,6 @@ variable "cc_subnets" {
   type        = list(string)
   description = "Cloud Connector Subnets to create in VPC. This is only required if you want to override the default subnets that this code creates via vpc_cidr variable."
   default     = null
-}
-
-variable "route53_subnets" {
-  type        = list(string)
-  description = "Route 53 Outbound Endpoint Subnets to create in VPC. This is only required if you want to override the default subnets that this code creates via vpc_cidr variable."
-  default     = null
-}
-
-variable "zpa_enabled" {
-  type        = bool
-  default     = false
-  description = "Configure Route 53 Subnets, Route Tables, and Resolvers for ZPA DNS redirection"
 }
 
 variable "workloads_enabled" {
@@ -168,22 +156,5 @@ variable "byo_ngw_ids" {
 variable "cc_route_table_enabled" {
   type        = bool
   description = "For brownfield environments where VPC subnets already exist, set to false to not create a new route table to associate to Cloud Connector subnet(s). Default is true which means module will try to create new route tables"
-  default     = true
-}
-
-variable "byo_r53_subnet_ids" {
-  type        = list(string)
-  description = "User provided existing AWS Subnet IDs reserved for ZPA/Route53 use"
-  default     = []
-
-  validation {
-    condition     = length(var.byo_r53_subnet_ids) != 1
-    error_message = "Minimum number of subnets not met. Provide at least 2 subnet IDs."
-  }
-}
-
-variable "r53_route_table_enabled" {
-  type        = bool
-  description = "For brownfield environments where VPC subnets already exist, set to false to not create a new route table to associate to ZPA/Route 53 reserved subnet(s). Default is true which means module will try to create new route tables"
   default     = true
 }

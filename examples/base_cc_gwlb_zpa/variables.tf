@@ -38,12 +38,6 @@ variable "cc_subnets" {
   default     = null
 }
 
-variable "route53_subnets" {
-  type        = list(string)
-  description = "Route 53 Outbound Endpoint Subnets to create in VPC. This is only required if you want to override the default subnets that this code creates via vpc_cidr variable."
-  default     = null
-}
-
 variable "workload_count" {
   type        = number
   description = "Default number of workload VMs to create"
@@ -226,27 +220,10 @@ variable "rebalance_enabled" {
   default     = true
 }
 
-variable "domain_names" {
-  type        = map(any)
-  description = "Domain names fqdn/wildcard to have Route 53 redirect DNS requests to Cloud Connector for ZPA. Refer to terraform.tfvars ZPA/Route 53 specific variables"
-}
-
-variable "target_address" {
-  type        = list(string)
-  description = "Route 53 DNS queries will be forwarded to these Zscaler Global VIP addresses"
-  default     = ["185.46.212.88", "185.46.212.89"]
-}
-
-variable "zpa_enabled" {
-  type        = bool
-  default     = true
-  description = "Configure Route 53 Subnets, Route Tables, and Resolvers for ZPA DNS redirection"
-}
-
 variable "gwlb_enabled" {
   type        = bool
   default     = true
-  description = "Default is true. Workload/Route 53 subnet Route Tables will point to network_interface_id via var.cc_service_enis. If true, Route Tables will point to vpc_endpoint_id via var.gwlb_endpoint_ids input."
+  description = "Default is true. Workload subnet Route Tables will point to vpc_endpoint_id via var.gwlb_endpoint_ids input. If false, Route Tables will point to network_interface_id via var.cc_service_enis."
 }
 
 variable "acceptance_required" {
